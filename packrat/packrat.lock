@@ -28,6 +28,17 @@ Source: CRAN
 Version: 0.12.9
 Hash: 7ab41cbe74918de8de87e435ef17e92d
 
+Package: RcppEigen
+Source: CRAN
+Version: 0.3.2.9.0
+Hash: 3f0a2179e872b4e0eddfb747b289b7be
+Requires: Rcpp
+
+Package: StanHeaders
+Source: CRAN
+Version: 2.14.0-1
+Hash: 37f0069507cabc2f33bd117558104728
+
 Package: assertthat
 Source: CRAN
 Version: 0.1
@@ -98,6 +109,11 @@ Source: CRAN
 Version: 1.2.1
 Hash: 7de1f8f760441881804af7c1ff324340
 Requires: R6, curl, jsonlite, mime, openssl
+
+Package: inline
+Source: CRAN
+Version: 0.3.14
+Hash: d2e10c068b7b3cc450bd630e69f89ce9
 
 Package: jsonlite
 Source: CRAN
@@ -173,6 +189,22 @@ Source: CRAN
 Version: 1.4.2
 Hash: 85d9947f8a5e187dff7f18265b96cb13
 Requires: Rcpp, plyr, stringr
+
+Package: rethinking
+Source: github
+Version: 1.59
+Hash: 3ad4795e4a145a526344b2cf24c4c987
+Requires: coda, loo, mvtnorm, rstan
+GithubRepo: rethinking
+GithubUsername: rmcelreath
+GithubRef: master
+GithubSha1: a309712d904d1db7af1e08a76c521ab994006fd5
+
+Package: rstan
+Source: CRAN
+Version: 2.14.1
+Hash: 41609820f66bda90d703cdb265b59a46
+Requires: BH, Rcpp, RcppEigen, StanHeaders, ggplot2, gridExtra, inline
 
 Package: rstudioapi
 Source: CRAN
