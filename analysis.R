@@ -6,6 +6,7 @@ library(magrittr)
 library(ggplot2)
 library(rethinking)
 library(MCMCpack)
+library(reshape2)
 
 # simulate data
 N <- 50
@@ -49,7 +50,7 @@ data.frame(
   geom_ribbon(aes(ymax = mu_upper_bound, ymin = mu_lower_bound), alpha = .05, fill = "red")
 
 # simulate new observations
-compute_empirical_multinomial_expected_value <- function(prob, size = 50) {
+compute_empirical_multinomial_expected_value <- function(prob, size = 500) {
   rmultinom(n = 1, size = size, prob = prob) %>%
     "/"(size) %>%
     "*"(1:length(prob)) %>%
@@ -72,7 +73,34 @@ simulated_observations_multinomial <- apply(X = simulated_probabilities_multinom
   set_colnames("weighted_average")
 simulated_observations_multinomial$model <- "multinomial"
 
+# compare histograms
+simulated_observations %>%
+  rbind(simulated_observations_multinomial) %>%
+  ggplot(aes(x = weighted_average, fill = model)) +
+  geom_histogram(alpha = .7, color = "white")
+
+# compare density plots
 simulated_observations %>%
   rbind(simulated_observations_multinomial) %>%
   ggplot(aes(x = weighted_average, fill = model)) +
   geom_density(alpha = .7, color = "white")
+
+# compare CDF distributions
+simulated_probabilities_cumsum <- apply(X = simulated_probabilities, MARGIN = 1, FUN = cumsum) %>%
+  t %>%
+  as.data.frame %>%
+  set_colnames(outcomes)
+simulated_probabilities_cumsum$model <- "ordered"
+
+simulated_probabilities_multinomial_cumsum <- apply(X = simulated_probabilities_multinomial, MARGIN = 1, FUN = cumsum) %>%
+  t %>%
+  as.data.frame %>%
+  set_colnames(outcomes)
+simulated_probabilities_multinomial_cumsum$model <- "multinomial"
+
+cumsum_df <- rbind(simulated_probabilities_cumsum, simulated_probabilities_multinomial_cumsum)
+cumsum_df$trial <- 1:nrow(cumsum_df)
+cumsum_df %>%
+  melt(id.vars=c("model", "trial")) %>%
+  ggplot(aes(x = variable, y = value, group = factor(trial))) +
+  geom_line(aes(color = model), alpha = .2)
