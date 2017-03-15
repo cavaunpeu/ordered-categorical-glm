@@ -5,6 +5,7 @@ library(tidyr)
 library(magrittr)
 library(ggplot2)
 library(rethinking)
+library(MCMCpack)
 
 # simulate data
 N <- 50
@@ -64,26 +65,6 @@ apply(X = simulated_probabilities, MARGIN = 1, FUN = compute_empirical_multinomi
   qplot(bins = 30, color = I("white"), fill = I("deepskyblue3"), alpha = I(.8))
 
 # compare with multinomial model
-multinomial_model_code <- "
-data {
-  int K;
-  int N;
-  int obs[N];
-}
-parameters {
-  vector[K] alpha;
-}
-model {
-  for (k in 1:K)
-    if (k == 1) {
-      alpha[k] ~ normal(0, .001);
-    }
-    else {
-      alpha[k] ~ normal(0, 5);
-    }
-  for (n in 1:N)
-    obs[n] ~ categorical(softmax(alpha));
-}
-"
-data <- list(obs = feedback$obs, K = length(outcomes), N = N)
-multinomial_model <- stan(model_code = multinomial_model_code, data = data, warmup = 1000, iter = 4000, chains = 2, cores = 2, verbose = TRUE)
+posterior_probability_samples_mn <- rdirichlet(n = nrow(simulated_probabilities), alpha = 1 + table(feedback$obs))
+apply(X = posterior_probability_samples_mn, MARGIN = 1, FUN = compute_empirical_multinomial_expected_value) %>%
+  qplot(bins = 30, color = I("white"), fill = I("deepskyblue3"), alpha = I(.8))
