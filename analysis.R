@@ -45,3 +45,18 @@ data.frame(
     geom_line(aes(y=mu, color="Estimated"), linetype="dashed") +
     geom_ribbon(aes(ymax=mu_upper_bound, ymin=mu_lower_bound), alpha=.05, fill="red")
 
+# simulate new observations
+compute_empirical_multinomial_expected_value <- function(prob, size = 50) {
+  rmultinom(n = 1, size = size, prob = prob) %>%
+    "/"(size) %>%
+    "*"(1:length(prob)) %>%
+    sum
+}
+
+simulated_probabilities <- cbind(cutpoint_samples, 1) - cbind(0, cutpoint_samples) %>%
+  as.data.frame %>%
+  set_colnames(1:length(probabilities))
+
+# plot new observations
+apply(X = simulated_probabilities, MARGIN = 1, FUN = compute_empirical_multinomial_expected_value) %>%
+  qplot(bins=30, color=I("white"), fill=I("deepskyblue3"), alpha=I(.8))
