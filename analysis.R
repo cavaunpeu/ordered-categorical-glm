@@ -43,7 +43,7 @@ data.frame(
   mu_upper_bound = cutpoint_PI[2,]
 ) %>%
   bind_cols(cumulative_proportions[1:nrow(cumulative_proportions)-1,]) %>%
-  ggplot(., aes(x = outcome)) +
+  ggplot(aes(x = outcome)) +
   geom_point(size = 2, aes(y = observed, color = "Observed")) +
   geom_line(aes(y = mu, color = "Estimated"), linetype = "dashed") +
   geom_ribbon(aes(ymax = mu_upper_bound, ymin = mu_lower_bound), alpha = .05, fill = "red")
@@ -56,15 +56,23 @@ compute_empirical_multinomial_expected_value <- function(prob, size = 50) {
     sum
 }
 
-simulated_probabilities <- cbind(cutpoint_samples, 1) - cbind(0, cutpoint_samples) %>%
+simulated_probabilities <- cbind(cutpoint_samples, 1) - cbind(0, cutpoint_samples)
+simulated_observations <- apply(X = simulated_probabilities, MARGIN = 1, FUN = compute_empirical_multinomial_expected_value) %>%
   as.data.frame %>%
-  set_colnames(outcomes)
+  set_colnames("weighted_average")
+simulated_observations$model <- "ordered"
 
-# plot new observations
-apply(X = simulated_probabilities, MARGIN = 1, FUN = compute_empirical_multinomial_expected_value) %>%
+simulated_observations$weighted_average %>%
   qplot(bins = 30, color = I("white"), fill = I("deepskyblue3"), alpha = I(.8))
 
 # compare with multinomial model
-posterior_probability_samples_mn <- rdirichlet(n = nrow(simulated_probabilities), alpha = 1 + table(feedback$obs))
-apply(X = posterior_probability_samples_mn, MARGIN = 1, FUN = compute_empirical_multinomial_expected_value) %>%
-  qplot(bins = 30, color = I("white"), fill = I("deepskyblue3"), alpha = I(.8))
+simulated_probabilities_multinomial <- rdirichlet(n = nrow(simulated_probabilities), alpha = 1 + table(feedback$obs))
+simulated_observations_multinomial <- apply(X = simulated_probabilities_multinomial, MARGIN = 1, FUN = compute_empirical_multinomial_expected_value) %>%
+  as.data.frame %>%
+  set_colnames("weighted_average")
+simulated_observations_multinomial$model <- "multinomial"
+
+simulated_observations %>%
+  rbind(simulated_observations_multinomial) %>%
+  ggplot(aes(x = weighted_average, fill = model)) +
+  geom_density(alpha = .7, color = "white")
