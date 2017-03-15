@@ -9,11 +9,13 @@ library(rethinking)
 # simulate data
 N <- 50
 probabilities <- c(.1, .2, .3, .3, .1)
+outcomes <- 1:length(probabilities)
+
 feedback <- rmultinom(n = N, size = 1, prob = probabilities) %>% t %>% max.col %>% as.data.frame %>% set_colnames("obs")
 ggplot(feedback, aes(x = obs)) + geom_bar()
 
 # plot observed cumulative probabilities
-cumulative_proportions <- feedback %>% table %>% "/"(N) %>% cumsum %>% as.data.frame %>% set_colnames("observed") %>% mutate(outcome = 1:length(probabilities))
+cumulative_proportions <- feedback %>% table %>% "/"(N) %>% cumsum %>% as.data.frame %>% set_colnames("observed") %>% mutate(outcome = outcomes)
 ggplot(cumulative_proportions, aes(x = outcome, y = observed)) + geom_point()
 
 # fit model
@@ -55,8 +57,33 @@ compute_empirical_multinomial_expected_value <- function(prob, size = 50) {
 
 simulated_probabilities <- cbind(cutpoint_samples, 1) - cbind(0, cutpoint_samples) %>%
   as.data.frame %>%
-  set_colnames(1:length(probabilities))
+  set_colnames(outcomes)
 
 # plot new observations
 apply(X = simulated_probabilities, MARGIN = 1, FUN = compute_empirical_multinomial_expected_value) %>%
   qplot(bins = 30, color = I("white"), fill = I("deepskyblue3"), alpha = I(.8))
+
+# compare with multinomial model
+multinomial_model_code <- "
+data {
+  int K;
+  int N;
+  int obs[N];
+}
+parameters {
+  vector[K] alpha;
+}
+model {
+  for (k in 1:K)
+    if (k == 1) {
+      alpha[k] ~ normal(0, .001);
+    }
+    else {
+      alpha[k] ~ normal(0, 5);
+    }
+  for (n in 1:N)
+    obs[n] ~ categorical(softmax(alpha));
+}
+"
+data <- list(obs = feedback$obs, K = length(outcomes), N = N)
+multinomial_model <- stan(model_code = multinomial_model_code, data = data, warmup = 1000, iter = 4000, chains = 2, cores = 2, verbose = TRUE)
