@@ -106,6 +106,7 @@ simulated_observations %>%
     x = "Weighted Average",
     y = "Count"
   )
+ggsave("figures/comparative_posterior_predictive_histograms.png", scale = .75, dpi = 300)
 
 # compare density plots
 simulated_observations %>%
@@ -118,6 +119,7 @@ simulated_observations %>%
     x = "Weighted Average",
     y = "Count"
   )
+ggsave("figures/comparative_posterior_predictive_density_plots.png", scale = .75, dpi = 300)
 
 # compare CDF distributions
 simulated_probabilities_cumsum <- apply(X = simulated_probabilities, MARGIN = 1, FUN = cumsum) %>%
@@ -137,4 +139,12 @@ cumsum_df$trial <- 1:nrow(cumsum_df)
 cumsum_df %>%
   melt(id.vars=c("model", "trial")) %>%
   ggplot(aes(x = variable, y = value, group = factor(trial))) +
-  geom_line(aes(color = model), alpha = .2)
+  geom_line(aes(color = model), alpha = .05) +
+  guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  theme_minimal() +
+  labs(
+    title = "Posterior Distribution of the CDF",
+    x = "Score",
+    y = "Cumulative Probability"
+  )
+ggsave("figures/comparative_posterior_cumulative_distributions.png", scale = .75, dpi = 300)
