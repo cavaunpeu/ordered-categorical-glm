@@ -31,20 +31,23 @@ ggplot(cumulative_proportions, aes(x = outcome, y = observed)) +
   )
 
 # fit model
-model <- map2stan(
-  alist(
-    obs ~ dordlogit( phi, cutpoints ),
-    phi <- 0,
-    cutpoints ~ dnorm(0, 10)
-  ),
-  data = feedback, start = list(cutpoints = c(-2, -1, 1, 2)), chains = 2
+data <- list(obs = feedback$obs, N = N)
+cutpoint_init_values <- list(cutpoints = c(-2, -1, 1, 2))
+model <- stan(
+  file = "model.stan",
+  data = data,
+  init = list(cutpoint_init_values, cutpoint_init_values),
+  chains = 2,
+  cores = 2,
+  verbose = TRUE
 )
 
 # examine estimates
 sigmoid <- function(z) 1 / (1 + exp(-z))
 sigmoid( coef(model) ) %>% plot
 
-cutpoint_samples <- extract(model@stanfit)$cutpoints %>% sigmoid
+# cutpoint_samples <- extract(model@stanfit)$cutpoints %>% sigmoid
+cutpoint_samples <- extract(model)$cutpoints %>% sigmoid
 cutpoint_mu <- apply(X = cutpoint_samples, MARGIN = 2, FUN = mean)
 cutpoint_PI <- apply(X = cutpoint_samples, MARGIN = 2, FUN = quantile, c(.04, .96))
 
