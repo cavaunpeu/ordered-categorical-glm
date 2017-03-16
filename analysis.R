@@ -84,7 +84,9 @@ simulated_observations <- apply(X = simulated_probabilities, MARGIN = 1, FUN = c
 simulated_observations$model <- "ordered"
 
 simulated_observations$weighted_average %>%
-  qplot(bins = 30, color = I("white"), fill = I("deepskyblue3"), alpha = I(.8))
+  qplot(bins = 30, color = I("white"), fill = I("deepskyblue3"),
+        alpha = I(.8), main = "Distribution of Simulated Weighted Averages, Ordered Categorical GLM",
+        xlab = "Weighted Average", ylab = "Count")
 
 # compare with multinomial model
 simulated_probabilities_multinomial <- rdirichlet(n = nrow(simulated_probabilities), alpha = 1 + table(feedback$obs))
@@ -97,13 +99,25 @@ simulated_observations_multinomial$model <- "multinomial"
 simulated_observations %>%
   rbind(simulated_observations_multinomial) %>%
   ggplot(aes(x = weighted_average, fill = model)) +
-  geom_histogram(alpha = .7, color = "white")
+  geom_histogram(alpha = .7, color = "white", bins = 50) +
+  theme_minimal() +
+  labs(
+    title = "Posterior Predictive Histogram of Weighted Average Throws",
+    x = "Weighted Average",
+    y = "Count"
+  )
 
 # compare density plots
 simulated_observations %>%
   rbind(simulated_observations_multinomial) %>%
   ggplot(aes(x = weighted_average, fill = model)) +
-  geom_density(alpha = .7, color = "white")
+  geom_density(alpha = .7, color = "white") +
+  theme_minimal() +
+  labs(
+    title = "Posterior Predictive Density Plot of Weighted Average Throws",
+    x = "Weighted Average",
+    y = "Count"
+  )
 
 # compare CDF distributions
 simulated_probabilities_cumsum <- apply(X = simulated_probabilities, MARGIN = 1, FUN = cumsum) %>%
