@@ -1,24 +1,34 @@
 # analysis
 
-library(dplyr)
-library(tidyr)
-library(magrittr)
-library(ggplot2)
-library(rethinking)
-library(MCMCpack)
-library(reshape2)
+packages <- c("dplyr", "tidyr", "magrittr", "ggplot2", "rethinking", "MCMCpack", "reshape2", "ggthemes")
+lapply(packages, require, character.only = TRUE)
 
 # simulate data
 N <- 50
 probabilities <- c(.1, .2, .3, .3, .1)
 outcomes <- 1:length(probabilities)
-
 feedback <- rmultinom(n = N, size = 1, prob = probabilities) %>% t %>% max.col %>% as.data.frame %>% set_colnames("obs")
-ggplot(feedback, aes(x = obs)) + geom_bar()
+ggplot(feedback, aes(x = obs)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(
+    title = "Empirical Counts of Explicit Feedback Scores",
+    x = "Score",
+    y = "Count"
+  )
+ggsave("figures/empirical_distribution_explicit_feedback_scores.png", scale = .75, dpi = 300)
 
 # plot observed cumulative probabilities
 cumulative_proportions <- feedback %>% table %>% "/"(N) %>% cumsum %>% as.data.frame %>% set_colnames("observed") %>% mutate(outcome = outcomes)
-ggplot(cumulative_proportions, aes(x = outcome, y = observed)) + geom_point()
+ggplot(cumulative_proportions, aes(x = outcome, y = observed)) +
+  geom_point(size = 2) +
+  geom_line() +
+  theme_minimal() +
+  labs(
+    title = "Empirical CDF of Explicit Feedback Scores",
+    x = "Score",
+    y = "Cumulative Probability"
+  )
 
 # fit model
 model <- map2stan(
