@@ -60,7 +60,14 @@ data.frame(
   ggplot(aes(x = outcome)) +
   geom_point(size = 2, aes(y = observed, color = "Observed")) +
   geom_line(aes(y = mu, color = "Estimated"), linetype = "dashed") +
-  geom_ribbon(aes(ymax = mu_upper_bound, ymin = mu_lower_bound), alpha = .05, fill = "red")
+  geom_ribbon(aes(ymax = mu_upper_bound, ymin = mu_lower_bound), alpha = .05, fill = "red") +
+  theme_minimal() +
+  labs(
+    title = "Mean Posterior Cumulative Distribution Function",
+    x = "Score",
+    y = "Cumulative Probability"
+  )
+ggsave("figures/mean_posterior_cumulative_distribution.png", scale = .75, dpi = 300)
 
 # simulate new observations
 compute_empirical_multinomial_expected_value <- function(prob, size = 500) {
