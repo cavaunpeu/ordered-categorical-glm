@@ -54,8 +54,11 @@ server <- function(input, output) {
     if ( is.null(feedback) )
       return(NULL)
 
-    feedback <- readFeedback(feedback$datapath)
-    model <- OrderedCategoricalGLMEstimator::buildModel(feedback, iter = 4000)
+    df <- read.csv(feedback$datapath)
+    outcomes <- unique( unlist(df) )
+    first_model <- OrderedCategoricalGLM::buildModel(feedback = df$first, outcomes = outcomes, iter = 4000)
+    second_model <- OrderedCategoricalGLM::buildModel(feedback = df$second, outcomes = outcomes, iter = 4000)
+    browser()
     predictions <- simulatePredictions(model)
     generatePlot(predictions)
   })
