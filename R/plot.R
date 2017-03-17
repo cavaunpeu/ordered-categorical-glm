@@ -1,5 +1,8 @@
 # plot
 
+source("http://peterhaschke.com/Code/multiplot.R")
+library(gridExtra)
+
 sigmoid <- function(z) 1 / (1 + exp(-z))
 extract_cutpoint_samples <- function(model) extract(model)$cutpoints
 
@@ -9,7 +12,7 @@ extract_cdf_samples <- function(model) {
     sigmoid %>%
     as.data.frame %>%
     cbind(1) %>%
-    set_colnames(outcomes)
+    set_colnames(1:ncol(.))
 }
 
 convert_cdf_to_pmf <- function(cdf_samples) cdf_samples - cbind(0, cdf_samples[ , -ncol(cdf_samples) ])
@@ -50,7 +53,7 @@ generate_comparative_density_plot <- function(first_model, second_model, first_m
     )
 }
 
-generate_comparative_cdf_distribution_plot <- function(first_model, second_model, outcomes, first_model_name = "A", second_model_name = "B") {
+generate_comparative_cdf_distribution_plot <- function(first_model, second_model, first_model_name = "A", second_model_name = "B") {
   cdf_samples_first <- first_model %>% extract_cdf_samples %>% cbind(model = first_model_name)
   cdf_samples_second <- second_model %>% extract_cdf_samples %>% cbind(model = second_model_name)
   rbind(cdf_samples_first, cdf_samples_second) %>%
@@ -66,4 +69,10 @@ generate_comparative_cdf_distribution_plot <- function(first_model, second_model
       x = "Score",
       y = "Cumulative Probability"
     )
+}
+
+generate_plot <- function(first_model, second_model) {
+  density_plot <- generate_comparative_density_plot(first_model, second_model)
+  cdf_distribution_plot <- generate_comparative_cdf_distribution_plot(first_model, second_model)
+  grid.arrange(density_plot, cdf_distribution_plot, nrow = 2, ncol = 1)
 }
