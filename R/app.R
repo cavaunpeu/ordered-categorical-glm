@@ -3,7 +3,7 @@ library(shiny)
 
 ui <- fluidPage(
 
-  titlePanel("A/B Testing with Explicit Feedback Scores"),
+  titlePanel("A/B Testing with Product Feedback Scores"),
 
   fixedRow(
     column(
