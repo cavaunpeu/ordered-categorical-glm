@@ -18,7 +18,8 @@ ui <- fluidPage(
         h3("Arrange data"),
         helpText(
           "Place your data into a two-columned *.csv. The first column should contain integer scores from the first product variant and have the
-          header \"first\". The second column should contain data from the second product variant and have the header \"second\"."
+          header \"first\". The second column should contain data from the second product variant and have the header \"second\". Scores should
+          be integers from 1 to 5. The columns do not need to contain the same number of values (Bayes!)."
         ),
         tags$hr(),
         h3("Upload data"),
