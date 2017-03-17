@@ -1,5 +1,5 @@
-lapply(c("shiny"), require, character.only = TRUE)
 source("plot.R")
+library(shiny)
 
 ui <- fluidPage(
 
