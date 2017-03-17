@@ -58,14 +58,14 @@ generate_comparative_density_plot <- function(first_model, second_model, first_m
 }
 
 generate_comparative_cdf_distribution_plot <- function(first_model, second_model, first_model_name = "A", second_model_name = "B") {
-  cdf_samples_first <- first_model %>% extract_cdf_samples %>% cbind(model = first_model_name)
-  cdf_samples_second <- second_model %>% extract_cdf_samples %>% cbind(model = second_model_name)
+  cdf_samples_first <- first_model %>% extract_cdf_samples %>% cbind(model = first_model_name) %>% head(200)
+  cdf_samples_second <- second_model %>% extract_cdf_samples %>% cbind(model = second_model_name) %>% head(200)
 
   rbind(cdf_samples_first, cdf_samples_second) %>%
     mutate(trial = 1:nrow(.)) %>%
     melt(id.vars=c("model", "trial")) %>%
     ggplot(aes(x = variable, y = value, group = factor(trial))) +
-    geom_line(aes(color = model), alpha = .05) +
+    geom_line(aes(color = model), alpha = .15) +
     guides(colour = guide_legend(override.aes = list(alpha = 1), title = "Population")) +
     theme_minimal() +
     labs(
