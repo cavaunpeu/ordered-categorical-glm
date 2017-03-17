@@ -1,6 +1,5 @@
 # plot
 
-source("http://peterhaschke.com/Code/multiplot.R")
 library(gridExtra)
 
 sigmoid <- function(z) 1 / (1 + exp(-z))
@@ -50,12 +49,18 @@ generate_comparative_density_plot <- function(first_model, second_model, first_m
       subtitle = "(If one is distinctly to the right of the other, it's probably better)",
       x = "Weighted Average",
       y = "Count"
+    ) +
+    theme(
+      plot.title = element_text(size=15),
+      axis.title = element_text(size=12),
+      plot.margin = unit( c(3, 3, 5, 3), "mm" )
     )
 }
 
 generate_comparative_cdf_distribution_plot <- function(first_model, second_model, first_model_name = "A", second_model_name = "B") {
   cdf_samples_first <- first_model %>% extract_cdf_samples %>% cbind(model = first_model_name)
   cdf_samples_second <- second_model %>% extract_cdf_samples %>% cbind(model = second_model_name)
+
   rbind(cdf_samples_first, cdf_samples_second) %>%
     mutate(trial = 1:nrow(.)) %>%
     melt(id.vars=c("model", "trial")) %>%
@@ -65,9 +70,14 @@ generate_comparative_cdf_distribution_plot <- function(first_model, second_model
     theme_minimal() +
     labs(
       title = "Posterior CDF Distribution",
-      subtitle = "(If one is distinctly more \"bent towards the bottom-right\" than the other, it's probably better)",
+      subtitle = "(If one is distinctly \"bent towards the bottom-right\" of the other, it's probably better)",
       x = "Score",
       y = "Cumulative Probability"
+    ) +
+    theme(
+      plot.title = element_text(size=15),
+      axis.title = element_text(size=12),
+      plot.margin = unit( c(3, 3, 5, 3), "mm" )
     )
 }
 
