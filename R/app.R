@@ -58,7 +58,6 @@ server <- function(input, output) {
     outcomes <- unique( unlist(df) )
     first_model <- OrderedCategoricalGLM::buildModel(feedback = df$first, outcomes = outcomes, iter = 4000)
     second_model <- OrderedCategoricalGLM::buildModel(feedback = df$second, outcomes = outcomes, iter = 4000)
-    browser()
     predictions <- simulatePredictions(model)
     generatePlot(predictions)
   })

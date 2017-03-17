@@ -46,7 +46,6 @@ model <- stan(
 sigmoid <- function(z) 1 / (1 + exp(-z))
 sigmoid( coef(model) ) %>% plot
 
-# cutpoint_samples <- extract(model@stanfit)$cutpoints %>% sigmoid
 cutpoint_samples <- extract(model)$cutpoints %>% sigmoid
 cutpoint_mu <- apply(X = cutpoint_samples, MARGIN = 2, FUN = mean)
 cutpoint_PI <- apply(X = cutpoint_samples, MARGIN = 2, FUN = quantile, c(.04, .96))
