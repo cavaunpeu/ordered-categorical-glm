@@ -1,4 +1,5 @@
 lapply(c("shiny"), require, character.only = TRUE)
+source("plot.R")
 
 ui <- fluidPage(
 
@@ -58,8 +59,7 @@ server <- function(input, output) {
     outcomes <- unique( unlist(df) )
     first_model <- OrderedCategoricalGLM::buildModel(feedback = df$first, outcomes = outcomes, iter = 4000)
     second_model <- OrderedCategoricalGLM::buildModel(feedback = df$second, outcomes = outcomes, iter = 4000)
-    predictions <- simulatePredictions(model)
-    generatePlot(predictions)
+    generate_plot(first_model, second_model)
   })
 
 }
