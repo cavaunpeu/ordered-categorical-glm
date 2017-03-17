@@ -24,6 +24,16 @@ Source: CRAN
 Version: 0.4-1
 Hash: 60a5c75e57aae4a0ce76cb7422939aaf
 
+Package: OrderedCategoricalGLM
+Source: github
+Version: 1.0
+Hash: 596bd213f0b7f2597b5b841d70ede163
+Requires: BH, Rcpp, RcppEigen, StanHeaders, rstan, rstantools
+GithubRepo: OrderedCategoricalGLM
+GithubUsername: cavaunpeu
+GithubRef: add-build-model
+GithubSha1: c7bb226cbdf48446e9f3baa58efd09c71fcde169
+
 Package: R6
 Source: CRAN
 Version: 2.2.0
@@ -44,16 +54,6 @@ Source: CRAN
 Version: 0.3.2.9.0
 Hash: 3f0a2179e872b4e0eddfb747b289b7be
 Requires: Rcpp
-
-Package: RescueTimeEstimator
-Source: github
-Version: 1.0
-Hash: f5c18d92d5aefaf1d4c534cf3dea877a
-Requires: BH, Rcpp, StanHeaders, RcppEigen, rstan
-GithubRepo: RescueTimeEstimator
-GithubUsername: cavaunpeu
-GithubRef: master
-GithubSha1: a3f12281d2fc58fd651b16ec09eb0eb93ba68f8f
 
 Package: SparseM
 Source: CRAN
@@ -112,7 +112,7 @@ Package: ggplot2
 Source: CRAN
 Version: 2.2.1
 Hash: 46e5cb78836848aa44655e577433f54b
-Requires: digest, gtable, lazyeval, plyr, tibble, scales, reshape2
+Requires: digest, gtable, lazyeval, plyr, reshape2, scales, tibble
 
 Package: ggthemes
 Source: CRAN
@@ -259,7 +259,12 @@ Package: rstan
 Source: CRAN
 Version: 2.14.1
 Hash: 41609820f66bda90d703cdb265b59a46
-Requires: BH, Rcpp, StanHeaders, inline, RcppEigen, gridExtra, ggplot2
+Requires: BH, Rcpp, RcppEigen, StanHeaders, ggplot2, gridExtra, inline
+
+Package: rstantools
+Source: CRAN
+Version: 1.1.0
+Hash: ce141b4524871b46fae0e51e29c6f0dd
 
 Package: rstudioapi
 Source: CRAN
@@ -270,7 +275,7 @@ Package: scales
 Source: CRAN
 Version: 0.4.1
 Hash: bc8d2233a63b068b0f60b18303d60c55
-Requires: RColorBrewer, Rcpp, dichromat, labeling, plyr, munsell
+Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
 
 Package: shiny
 Source: CRAN
