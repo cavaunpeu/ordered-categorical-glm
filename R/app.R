@@ -55,10 +55,14 @@ server <- function(input, output) {
     if ( is.null(feedback) )
       return(NULL)
 
+    remove_nulls <- function(v) v %>% .[!is.na(.)]
+
     df <- read.csv(feedback$datapath)
-    outcomes <- unique( unlist(df) )
-    first_model <- OrderedCategoricalGLM::buildModel(feedback = df$first, outcomes = outcomes, iter = 4000)
-    second_model <- OrderedCategoricalGLM::buildModel(feedback = df$second, outcomes = outcomes, iter = 4000)
+    first <- df$first %>% remove_nulls
+    second <- df$second %>% remove_nulls
+
+    first_model <- OrderedCategoricalGLM::buildModel(feedback = first, iter = 4000)
+    second_model <- OrderedCategoricalGLM::buildModel(feedback = second, iter = 4000)
     generate_plot(first_model, second_model)
   })
 
