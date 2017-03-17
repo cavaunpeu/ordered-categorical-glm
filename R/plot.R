@@ -5,8 +5,8 @@ packages <- c("ggplot2", "reshape2", "dplyr", "ggthemes", "gridExtra")
 lapply(packages, require, character.only = TRUE)
 
 generate_comparative_density_plot <- function(first_model, second_model, first_model_name = "A", second_model_name = "B") {
-  compute_posterior_weighted_average_density(model = first_model, model_name = first_model_name) %>%
-    rbind( compute_posterior_weighted_average_density(model = second_model, model_name = second_model_name) ) %>%
+  compute_posterior_weighted_average_histogram(model = first_model, model_name = first_model_name) %>%
+    rbind( compute_posterior_weighted_average_histogram(model = second_model, model_name = second_model_name) ) %>%
     ggplot(aes(x = weighted_average, fill = model)) +
     geom_density(alpha = .5, color = "white") +
     theme_minimal() +

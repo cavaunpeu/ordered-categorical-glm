@@ -32,7 +32,7 @@ generate_weighted_average_posterior_predictions <- function(pmf_samples, model_n
     cbind(model = model_name)
 }
 
-compute_posterior_weighted_average_density <- function(model, model_name) {
+compute_posterior_weighted_average_histogram <- function(model, model_name) {
   model %>%
     extract_cdf_samples %>%
     convert_cdf_to_pmf %>%
