@@ -45,6 +45,16 @@ Version: 0.3.2.9.0
 Hash: 3f0a2179e872b4e0eddfb747b289b7be
 Requires: Rcpp
 
+Package: RescueTimeEstimator
+Source: github
+Version: 1.0
+Hash: f5c18d92d5aefaf1d4c534cf3dea877a
+Requires: BH, Rcpp, StanHeaders, RcppEigen, rstan
+GithubRepo: RescueTimeEstimator
+GithubUsername: cavaunpeu
+GithubRef: master
+GithubSha1: a3f12281d2fc58fd651b16ec09eb0eb93ba68f8f
+
 Package: SparseM
 Source: CRAN
 Version: 1.76
@@ -102,7 +112,7 @@ Package: ggplot2
 Source: CRAN
 Version: 2.2.1
 Hash: 46e5cb78836848aa44655e577433f54b
-Requires: digest, gtable, lazyeval, plyr, reshape2, scales, tibble
+Requires: digest, gtable, lazyeval, plyr, tibble, scales, reshape2
 
 Package: ggthemes
 Source: CRAN
@@ -125,6 +135,18 @@ Package: gtable
 Source: CRAN
 Version: 0.2.0
 Hash: cd78381a9d3fea966ac39bd0daaf5554
+
+Package: htmltools
+Source: CRAN
+Version: 0.3.5
+Hash: 6c7e3a96d9034d3ba8e6a07f7e2a333d
+Requires: Rcpp, digest
+
+Package: httpuv
+Source: CRAN
+Version: 1.3.3
+Hash: d73b1fc4f52d1179ff24f12f49eb6121
+Requires: Rcpp
 
 Package: httr
 Source: CRAN
@@ -237,7 +259,7 @@ Package: rstan
 Source: CRAN
 Version: 2.14.1
 Hash: 41609820f66bda90d703cdb265b59a46
-Requires: BH, Rcpp, RcppEigen, StanHeaders, ggplot2, gridExtra, inline
+Requires: BH, Rcpp, StanHeaders, inline, RcppEigen, gridExtra, ggplot2
 
 Package: rstudioapi
 Source: CRAN
@@ -248,7 +270,19 @@ Package: scales
 Source: CRAN
 Version: 0.4.1
 Hash: bc8d2233a63b068b0f60b18303d60c55
-Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
+Requires: RColorBrewer, Rcpp, dichromat, labeling, plyr, munsell
+
+Package: shiny
+Source: CRAN
+Version: 1.0.0
+Hash: 315fd5ac8ada4047f81af7c19d5a5974
+Requires: R6, digest, htmltools, httpuv, jsonlite, mime, sourcetools,
+    xtable
+
+Package: sourcetools
+Source: CRAN
+Version: 0.1.5
+Hash: 04ddeb1c288302222562326a471e2945
 
 Package: stringi
 Source: CRAN
@@ -282,3 +316,8 @@ Package: withr
 Source: CRAN
 Version: 1.0.2
 Hash: 774eb7be9087cdc24b53b74e5359cfac
+
+Package: xtable
+Source: CRAN
+Version: 1.8-2
+Hash: 7293235cfcc14cdff1ce7fd1a0212031
