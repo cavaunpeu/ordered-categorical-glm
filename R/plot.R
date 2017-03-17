@@ -18,8 +18,9 @@ generate_comparative_density_plot <- function(first_model, second_model, first_m
       y = "Count"
     ) +
     theme(
-      plot.title = element_text(size=15),
-      axis.title = element_text(size=12),
+      plot.title = element_text(size=18),
+      plot.subtitle = element_text(size=14),
+      axis.title = element_text(size=14),
       plot.margin = unit( c(3, 3, 5, 3), "mm" )
     )
 }
@@ -29,7 +30,7 @@ generate_comparative_cdf_distribution_plot <- function(first_model, second_model
   cdf_samples_second <- second_model %>% extract_cdf_samples %>% cbind(model = second_model_name) %>% head(200)
 
   rbind(cdf_samples_first, cdf_samples_second) %>%
-    mutate(trial = 1:nrow(.)) %>%
+    dplyr::mutate(trial = 1:nrow(.)) %>%
     melt(id.vars=c("model", "trial")) %>%
     ggplot(aes(x = variable, y = value, group = factor(trial))) +
     geom_line(aes(color = model), alpha = .15) +
@@ -42,8 +43,9 @@ generate_comparative_cdf_distribution_plot <- function(first_model, second_model
       y = "Cumulative Probability"
     ) +
     theme(
-      plot.title = element_text(size=15),
-      axis.title = element_text(size=12),
+      plot.title = element_text(size=18),
+      plot.subtitle = element_text(size=14),
+      axis.title = element_text(size=14),
       plot.margin = unit( c(3, 3, 5, 3), "mm" )
     )
 }
