@@ -1,7 +1,5 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
+.R*
 packrat/lib*/
 packrat/src/
 ordered-categorical-glm.Rproj
+rsconnect
