@@ -18,9 +18,11 @@ ui <- fluidPage(
         h3("Arrange data"),
         helpText(
           "Place your data into a two-columned *.csv. The first column should contain integer scores from the first product variant and have the
-          header \"first\". The second column should contain data from the second product variant and have the header \"second\". Scores should
-          be integers from 1 to 5. The columns do not need to contain the same number of values (Bayes!)."
-        ),
+          header \"A\". The second column should contain data from the second product variant and have the header \"B\"."),
+        helpText("Scores should be integers from 1 to 5 and the columns do not need to contain the same number of values (Bayes!)."),
+        helpText(
+          "Example input can be found",
+          tags$a(href="https://github.com/cavaunpeu/ordered-categorical-glm/blob/master/data/example.csv", "here.")),
         tags$hr(),
         h3("Upload data"),
         fileInput(
@@ -59,11 +61,11 @@ server <- function(input, output) {
     remove_nulls <- function(v) v %>% .[!is.na(.)]
 
     df <- read.csv(feedback$datapath)
-    first <- df$first %>% remove_nulls
-    second <- df$second %>% remove_nulls
+    A <- df$A %>% remove_nulls
+    B <- df$B %>% remove_nulls
 
-    first_model <- OrderedCategoricalGLM::buildModel(feedback = first, iter = 4000)
-    second_model <- OrderedCategoricalGLM::buildModel(feedback = second, iter = 4000)
+    first_model <- OrderedCategoricalGLM::buildModel(feedback = A, iter = 4000)
+    second_model <- OrderedCategoricalGLM::buildModel(feedback = B, iter = 4000)
     generate_plot(first_model, second_model)
   })
 
