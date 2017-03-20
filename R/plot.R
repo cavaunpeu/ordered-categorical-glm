@@ -15,7 +15,7 @@ generate_comparative_density_plot <- function(first_model, second_model, first_m
       title = "Posterior Predictive Density Plot of Weighted Average Scores",
       subtitle = "(If one is distinctly to the right of the other, it's probably better)",
       x = "Weighted Average",
-      y = "Count"
+      y = "Density"
     ) +
     theme(
       plot.title = element_text(size=18),
